@@ -1,8 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 module StructureTest.BackwardRules.TestBase (
-  -- sigs
+  -- * sigs
   man,entity,love,taro,
+  -- * defaults
   sigDef,
+  -- * function
   test
 )
 where
@@ -21,10 +23,21 @@ entity = A.aCon "entity"
 love = A.aCon "love"
 taro = A.aCon "taro"
 
+-- | default signature \(\text{taro:entity,love:[u1:entity,u2:entity]->type,man:[t1:entity]->type,entity:type}\)
 sigDef :: A.SAEnv
 sigDef = [(("man"),A.Arrow [entity] A.aType),(("love"),A.Arrow [entity,entity] (A.aType)),(("taro"),entity),(("entity"),A.aType)]
 
-test :: BR.Rule -> A.SAEnv -> A.AEnv -> (Maybe BR.ProofTerm) -> BR.ProofType -> (Maybe (UDT.Tree QT.DTTrule A.AJudgment)) -> A.AJudgment -> [BR.SubGoal] -> T.Text -> (T.Text,Bool)
+test :: 
+  BR.Rule -- ^ deduce rule
+    -> A.SAEnv -- ^ sig
+    -> A.AEnv -- ^ var
+    -> (Maybe BR.ProofTerm) -- ^ `M.Nothing` is used for deduce, (`M.Just` term) is used for typecheck
+    -> BR.ProofType -- ^ arrowterm to be proved
+    -> (Maybe (UDT.Tree QT.DTTrule A.AJudgment)) -- ^ if the rule is piElim or membership, you should set this parameter
+    -> A.AJudgment -- ^ expected downSide
+    -> [BR.SubGoal] -- ^ expected subgoals
+    -> T.Text -- ^ given text for label (ex. "memberhip", "piIntroTypeCheck1")
+    -> (T.Text,Bool) -- ^ (message, whether if expected subgoalset is found)
 test rule sig var maybeTerm targetType expectedTree expectedDside expectedSubgoals errorMessage =
   let goal = BR.Goal sig var maybeTerm [targetType]
       subgoalsets = fst $ rule goal
