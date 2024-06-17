@@ -1,0 +1,15 @@
+*.cabal
+*.hi
+*.o
+*~
+*.txt
+*.bak*.*
+*.bak
+*.old
+*.html
+*.log
+\#*
+haddock/
+.stack-work/
+output
+.vscode
