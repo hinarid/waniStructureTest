@@ -1,2 +1,0 @@
-module StructureTest.TestBase ()
-where

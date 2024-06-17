@@ -30,8 +30,10 @@ library:
   default-extensions:
   - OverloadedStrings
   exposed-modules:
-  - StructureTest.TestBase
-  - StructureTest.BackwardRule
+  - StructureTest.BackwardRules.TestBase
+  - StructureTest.BackwardRules.Membership
+  - StructureTest.BackwardRules.PiIntro
+  - StructureTest.BackwardRules.PiElim
 
 executables:
   waniStructureTEST:
